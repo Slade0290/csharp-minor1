@@ -35,7 +35,9 @@ namespace Venezia
                     .UseLoggerFactory(VeneziaContext.SqlLogger)
                     .UseSqlServer(Configuration.GetConnectionString("VeneziaContext")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<VeneziaContext>();
+                .AddEntityFrameworkStores<VeneziaContext>()
+                .AddDefaultTokenProviders();
+            services.AddMvc();
             services.AddRazorPages();
             services.Configure<IdentityOptions>(options =>
             {

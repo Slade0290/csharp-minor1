@@ -1,9 +1,13 @@
 ﻿@model Venezia.Models.Car
 
-@{
-    ViewData["Title"] = "Create";
-}
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
+@{ ViewData["Title"] = "Create"; }
+
+@if (SignInManager.IsSignedIn(User))
+{
 <h1>Create</h1>
 
 <h4>Car</h4>
@@ -48,7 +52,11 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+}
+else
+{
+    <h1>Vous devez être connecté(e) pour accéder à la page</h1>
+}
 @section SectionScripts{
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>

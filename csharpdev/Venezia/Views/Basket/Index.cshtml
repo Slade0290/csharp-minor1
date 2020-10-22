@@ -1,29 +1,38 @@
 ﻿@model Venezia.Models.BasketViewModel
-@{
-    ViewData["Title"] = "Index";
-}
 
-<h1>Mon panier</h1>
-<table class="table table-bordered table-striped">
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{ ViewData["Title"] = "Index"; }
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <h1>Mon panier</h1>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>
+                @{this.Write(Html.DisplayNameForInnerType<Venezia.Models.Car, string>(x => x.Mark)); }
+            </th>
+            <th>Modèle</th>
+            <th>Tarif</th>
+            <th>Quantité</th>
+        </tr>
+        @foreach (var item in Model.Cars)
+        {
     <tr>
-        <th>
-            @{this.Write(Html.DisplayNameForInnerType<Venezia.Models.Car, string>(x => x.Mark)); }
-        </th>
-        <th>Modèle</th>
-        <th>Tarif</th>
-        <th>Quantité</th>
+        <td>@item.Key.Mark</td>
+        <td>@item.Key.Model</td>
+        <td>@item.Key.Price</td>
+        <td>@item.Value</td>
     </tr>
-    @foreach (var item in Model.Cars)
-    {
-<tr>
-    <td>@item.Key.Mark</td>
-    <td>@item.Key.Model</td>
-    <td>@item.Key.Price</td>
-    <td>@item.Value</td>
-</tr>
+        }
+    </table>
+    <div class="alert alert-primary">
+        TOTAL: @Model.Total
+    </div>  
     }
-</table>
-<div class="alert alert-primary">
-    TOTAL: @Model.Total
-</div>
-
+else
+{
+    <h1>Vous devez être connecté(e) pour accéder à la page</h1>
+}

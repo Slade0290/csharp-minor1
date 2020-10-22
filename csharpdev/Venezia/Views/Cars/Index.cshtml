@@ -1,9 +1,13 @@
 ﻿@model IEnumerable<Venezia.Models.Car>
 
-@{
-    ViewData["Title"] = "Index";
-}
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
+@{ ViewData["Title"] = "Index"; }
+
+@if (SignInManager.IsSignedIn(User))
+{
 <h1>Index</h1>
 
 <p>
@@ -31,7 +35,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Mark)
@@ -54,6 +59,11 @@
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
-</table>
+</table> 
+}
+else
+{
+    <h1>Vous devez être connecté(e) pour accéder à la page</h1>
+}
