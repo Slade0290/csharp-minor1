@@ -34,9 +34,21 @@ namespace Venezia
             services.AddDbContext<VeneziaContext>(options => options
                     .UseLoggerFactory(VeneziaContext.SqlLogger)
                     .UseSqlServer(Configuration.GetConnectionString("VeneziaContext")));
+            
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<VeneziaContext>()
+                .AddDefaultTokenProviders();
+            /*
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<VeneziaContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+            }).AddEntityFrameworkStores<VeneziaContext>();
+            */
             services.AddMvc();
             services.AddRazorPages();
             services.Configure<IdentityOptions>(options =>
@@ -81,7 +93,7 @@ namespace Venezia
             }
 
             app.UseStaticFiles();
-            
+
             app.UseRouting();
             app.UseSession();
             app.UseAuthentication();
